@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{A7DE132B-5385-4628-ACF3-FD9F43A5F0E4}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Lessons_in_MachineLearning</RootNamespace>
+    <AssemblyName>Lessons in MachineLearning</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="MainProgram.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Chapter 01. Basics of Machine Learning\Chapter 01. Basics of Machine Learning.csproj">
+      <Project>{9e8a5a88-dac3-44ea-817d-37b3ebca197e}</Project>
+      <Name>Chapter 01. Basics of Machine Learning</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Chapter 02. Spam Email Filtering\Chapter 02. Spam Email Filtering.csproj">
+      <Project>{ca8b7724-157e-43a3-8935-79c4127481a2}</Project>
+      <Name>Chapter 02. Spam Email Filtering</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Chapter 03. Twitter Sentiment Analysis\Chapter 03. Twitter Sentiment Analysis.csproj">
+      <Project>{b9beec42-1fba-4d19-bbe3-08cd7e8cca64}</Project>
+      <Name>Chapter 03. Twitter Sentiment Analysis</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Chapter 04. Foreign Exchange Rate Forecast\Chapter 04. Foreign Exchange Rate Forecast.csproj">
+      <Project>{f75cf403-cc11-45f1-bad2-97d6bd2edbe1}</Project>
+      <Name>Chapter 04. Foreign Exchange Rate Forecast</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Chapter 05. Fair Value of House and Property\Chapter 05. Fair Value of House and Property.csproj">
+      <Project>{7b04884d-34b4-45a4-afb8-7c36eb07fab2}</Project>
+      <Name>Chapter 05. Fair Value of House and Property</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Chapter 06. Customer Segmentation\Chapter 06. Customer Segmentation.csproj">
+      <Project>{3a28a893-a2d5-446f-98e9-4b7dc784ec67}</Project>
+      <Name>Chapter 06. Customer Segmentation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Chapter 07. Music Genre Recommendation\Chapter 07. Music Genre Recommendation.csproj">
+      <Project>{a7e3241a-bf79-4b52-8026-3e63e9e3effc}</Project>
+      <Name>Chapter 07. Music Genre Recommendation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Chapter 08. Handwritten Digit Recognition\Chapter 08. Handwritten Digit Recognition.csproj">
+      <Project>{b027f964-f011-43b7-a128-fb0cbea33ff4}</Project>
+      <Name>Chapter 08. Handwritten Digit Recognition</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Chapter 09. Cyber Attack Detection\Chapter 09. Cyber Attack Detection.csproj">
+      <Project>{767c669a-7461-4423-a47e-6305c8117e98}</Project>
+      <Name>Chapter 09. Cyber Attack Detection</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Chapter 10. Credit Card Fraud Detection\Chapter 10. Credit Card Fraud Detection.csproj">
+      <Project>{2eacb880-49c5-435c-8748-d9a55159c014}</Project>
+      <Name>Chapter 10. Credit Card Fraud Detection</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Chapter 11. What is Next\Chapter 11. What is Next.csproj">
+      <Project>{16d8ace1-f7a5-4e41-afcb-8b12e3bf8c31}</Project>
+      <Name>Chapter 11. What is Next</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
