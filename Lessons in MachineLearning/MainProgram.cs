@@ -1,14 +1,17 @@
-﻿using System;
+﻿using Accord.MachineLearning;
+using javax.smartcardio;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using static edu.stanford.nlp.patterns.surface.SurfacePatternFactory;
+using static edu.stanford.nlp.pipeline.CoreNLPProtos;
 
 namespace Lessons_in_MachineLearning
 {
     internal class MainProgram
     {
-        public static void Main(string[] args)
-        {
-            var chapterMapping = new Dictionary<string, Action>
+        private static Dictionary<string, Action> _chapterMapping = new Dictionary<string, Action>
             {
                 { "1_1", Chapter01_1.Program.Run },
                 { "1_2", Chapter01_2.Program.Run },
@@ -45,19 +48,160 @@ namespace Lessons_in_MachineLearning
                 { "11_3", Chapter11_3.Program.Run }
             };
 
-            if (args.Length > 0 && chapterMapping.ContainsKey(args[0]))
+        private static readonly List<string> _chapters = new List<string> 
             {
-                chapterMapping[args[0]]();
-            }
-            else
-            {
-                var possibleEntries = string.Join(" |", chapterMapping.Keys.Where(k => k.Contains(args[0])).ToList());
+                "Chapter 1.Basics of Machine Learning",
+                "Chapter 2.Spam Email Filtering",
+                "Chapter 3.Twitter Sentiment Analysis",
+                "Chapter 4.Foreign Exchange Rate Forecast",
+                "Chapter 5.Fair Value of House and Property",
+                "Chapter 6.Customer Segmentation",
+                "Chapter 7.Music Genre Recommendation",
+                "Chapter 8.Handwritten Digit Recognition",
+                "Chapter 9.Cyber Attack Detection",
+                "Chapter 10.Credit Card Fraud Detection",
+                "Chapter 11.What is Next?"
+            };
+    public static void Main(string[] args)
+        {
+            string section;
 
-                if (string.IsNullOrEmpty(possibleEntries))
+            while (true)
+            {
+                section = LoadCheckPoint();
+
+                Console.Clear();
+
+                if (section == null)
                 {
-                    Console.WriteLine($"Input is not even close budy");
+                    Console.Clear();
+
+                    (Dictionary<string, Action> sections, string chapter_number) = SetChapater();
+
+                    var segment_input = FetchSegment(sections, int.Parse(chapter_number));
+
+                    section = $"{chapter_number}_{segment_input}";
                 }
-                else Console.WriteLine($"Invalid input...were you to input {possibleEntries}?");
+
+                if (!_chapterMapping.TryGetValue(section, out var run_action))
+                {
+                    Console.WriteLine("Invalid value");
+                    continue;
+                }
+
+                int sect = int.Parse(section.Split('_')[0]);
+
+                SimulateTyping($"{_chapters[sect - 1]}... Lets Begin...");
+                Console.WriteLine();
+                Console.WriteLine();
+
+                UserSettings.SaveSettings(key: "chapter_section", value: section);
+
+                run_action();
+            }
+        }
+
+        private static string FetchSegment(Dictionary<string, Action> sections, int chapter_number)
+        {
+            while (true)
+            {
+                Thread.Sleep(1000);
+                SimulateTyping("Which segment?");
+                Console.WriteLine();
+
+                foreach (var item in sections)
+                {
+                    SimulateTyping($"{_chapters[chapter_number - 1]} | Segment {item.Key}");
+                    Console.WriteLine();
+                }
+
+                var segment_input = Console.ReadLine();
+
+                if (!_chapterMapping.TryGetValue($"{chapter_number}_{segment_input}", out var run_action))
+                {
+                    Console.WriteLine("Invalid value");
+                    continue;
+                }
+
+                return segment_input;
+            }
+        }
+        private static (Dictionary<string, Action> sections, string chapter_number) SetChapater()
+        {
+            while (true)
+            {
+                Console.Clear();
+
+                SimulateTyping("Which chapter do you want to start with? Or press Q to quit");
+                Console.WriteLine();
+
+                Thread.Sleep(1000);
+                
+
+                foreach (var chapter in _chapters)
+                {
+                    SimulateTyping(chapter);
+                    Console.WriteLine();
+                    Thread.Sleep(500);
+                }
+
+                var chapter_input = Console.ReadLine();
+
+                Thread.Sleep(1000);
+                if (chapter_input.Equals("Q", StringComparison.CurrentCultureIgnoreCase)) break;
+
+                var selectedChapter = _chapterMapping.Where(c => c.Key.Contains($"{chapter_input}_")).ToDictionary(c => c.Key, c => c.Value);
+
+                if (!selectedChapter.Any())
+                {
+                    Thread.Sleep(1000);
+                    SimulateTyping("Invalid value");
+                    Console.WriteLine();
+                    continue;
+                }
+
+                return (selectedChapter, chapter_input);
+            }
+
+            return (null,null);
+        }
+        private static string LoadCheckPoint()
+        {
+
+            var checkpoint = UserSettings.LoadSettings();
+
+            if(!string.IsNullOrEmpty(checkpoint))
+            {
+                while (true)
+                {
+                    SimulateTyping("Proceed with preious save? y/n");
+                    Console.WriteLine();
+                    var ans = Console.ReadLine();
+
+                    if (ans.Equals("n", StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        return null;
+                    }
+                    else if(ans.Equals("y", StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        return checkpoint.Replace("chapter_section:","").Replace("\r\n","");
+                    }
+                    else
+                    {
+                        SimulateTyping("Invalid input...");
+                        Console.WriteLine();
+                    } 
+                }
+            }
+
+            return null;
+        }
+        private static void SimulateTyping(string word)
+        {
+            foreach (var c in word)
+            {
+                Console.Write(c);  // Print each character without a newline
+                Thread.Sleep(10); // Delay between each character to simulate typing
             }
         }
     }

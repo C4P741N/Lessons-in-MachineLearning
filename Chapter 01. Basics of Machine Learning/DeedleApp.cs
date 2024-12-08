@@ -14,7 +14,7 @@ namespace Chapter01_1
         public static void Run()
         {
             // Read AAPL stock prices from a CSV file
-            var root = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
+            var root = Directory.GetCurrentDirectory();
             var aaplData = Frame.ReadCsv(Path.Combine(root, "table_aapl.csv"));
             // Print the data
             Console.WriteLine("-- Raw Data --");
