@@ -26,6 +26,11 @@ namespace Chapter03_1
             return sb.ToSeries();
         }
 
+        public static void Main(string[] args)
+        {
+            Run();
+        }
+
         public static void Run()
         {
             Console.SetWindowSize(125, 50);

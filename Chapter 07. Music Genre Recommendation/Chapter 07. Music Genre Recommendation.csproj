@@ -43,5 +43,8 @@
   <ItemGroup>
     <Folder Include="input-data\" />
   </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.Data" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

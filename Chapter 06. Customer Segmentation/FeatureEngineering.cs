@@ -1,7 +1,5 @@
 using Accord.Controls;
-using CenterSpace.NMath.Core;
-
-//using CenterSpace.NMath.Stats;
+using CenterSpace.NMath.Stats;
 using Deedle;
 using System;
 using System.Collections.Generic;

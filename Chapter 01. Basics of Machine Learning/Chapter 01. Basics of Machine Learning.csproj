@@ -34,17 +34,12 @@
   </PropertyGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="packages.config" />
     <None Include="table_aapl.csv" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DeedleApp.cs" />
     <Compile Include="SampleAccordNETApp.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\PackageHandler\PackageHandler.csproj">
-      <Project>{b3d64ab0-beaa-405e-8045-85caa78164ce}</Project>
-      <Name>PackageHandler</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

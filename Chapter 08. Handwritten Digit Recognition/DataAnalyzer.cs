@@ -13,6 +13,10 @@ namespace Chapter08_1
 {
     public class Program
     {
+        public static void Main(string[] args)
+        {
+            Run();
+        }
         public static void Run()
         {
             Console.SetWindowSize(100, 60);

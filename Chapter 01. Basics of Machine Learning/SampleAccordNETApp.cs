@@ -13,6 +13,10 @@ namespace Chapter01_2
 {
     public class Program
     {
+        static void Main(string[] args) 
+        {
+            Run();
+        }
         public static void Run()
         {
             double[][] inputs =
@@ -42,8 +46,8 @@ namespace Chapter01_2
             bool[] predictions = logit.Decide(inputs);
 
             // Plot the results
-            ScatterplotBox.Show("Expected Results", inputs, outputs);
-            ScatterplotBox.Show("Actual Logistic Regression Output", inputs, predictions.ToZeroOne());
+            Console.WriteLine("Expected Results", inputs, outputs);
+            Console.WriteLine("Actual Logistic Regression Output", inputs, predictions.ToZeroOne());
 
             Console.ReadKey();
         }

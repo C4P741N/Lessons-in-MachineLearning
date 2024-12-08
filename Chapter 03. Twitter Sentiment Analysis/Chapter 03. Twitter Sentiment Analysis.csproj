@@ -42,5 +42,12 @@
     <Compile Include="TwitterSentimentModeling.cs" />
     <Compile Include="TwitterTokenizer.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <RuntimeIdentifiers>win;linux;osx</RuntimeIdentifiers>
+  </PropertyGroup>
 </Project>

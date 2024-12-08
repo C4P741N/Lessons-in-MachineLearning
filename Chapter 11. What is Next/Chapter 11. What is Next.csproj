@@ -38,6 +38,7 @@
   <ItemGroup>
     <Compile Include="ClassificationModelReview.cs" />
     <Compile Include="ClusteringAlgorithmReview.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="RegressionModelReview.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

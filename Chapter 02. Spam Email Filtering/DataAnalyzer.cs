@@ -14,6 +14,10 @@ namespace Chapter02_1
 {
     public class Program
     {
+        public static void Main(string[] args)
+        {
+            CreateWordVec(null);
+        }
         private static Frame<int, string> CreateWordVec(Series<int, string> rows)
         {
             var wordsByRows = rows.GetAllValues().Select((x, i) =>

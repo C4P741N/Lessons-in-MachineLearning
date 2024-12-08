@@ -1,85 +1,101 @@
+using Accord.Controls;
 using Deedle;
-using MathNet.Numerics.Statistics;
-using ScottPlot;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Chapter04_1
 {
     public class Program
     {
+        public static void Main(string[] args)
+        {
+            Run();
+        }
         public static void Run()
         {
             Console.SetWindowSize(100, 50);
 
-            // Path to the dataset
+            // Read in the OHLC dataset
+            // TODO: change the path to point to your data directory
             string dataDirPath = @"<path-to-your-data-dir>";
-            string ohlcDataPath = Path.Combine(dataDirPath, "eurusd-daily-ohlc.csv");
-            Console.WriteLine($"Loading {ohlcDataPath}\n");
 
-            // Load the OHLC data into a DataFrame
+            // Load the OHLC data into a data frame
+            string ohlcDataPath = Path.Combine(dataDirPath, "eurusd-daily-ohlc.csv");
+            Console.WriteLine("Loading {0}\n", ohlcDataPath);
             var ohlcDF = Frame.ReadCsv(
                 ohlcDataPath,
                 hasHeaders: true,
                 inferTypes: true
             );
 
-            // Plot close prices as a time-series line chart
-            var closePrices = ohlcDF.GetColumn<double>("Close").ValuesAll.ToArray();
-            var rowKeys = ohlcDF.RowKeys.Select(x => (double)x).ToArray();
-            PlotLineChart("Close Prices", rowKeys, closePrices);
+            // Time-series line chart of close prices
+            var closePriceLineChart = DataSeriesBox.Show(
+                ohlcDF.RowKeys.Select(x => (double)x),
+                ohlcDF.GetColumn<double>("Close").ValuesAll
+            );
 
-            // Plot daily returns as a time-series line chart
-            var dailyReturns = ohlcDF.FillMissing(0.0)["DailyReturn"].ValuesAll.ToArray();
-            PlotLineChart("Daily Returns", rowKeys, dailyReturns);
+            System.Threading.Thread.Sleep(3000);
+            closePriceLineChart.Invoke(
+                new Action(() =>
+                {
+                    closePriceLineChart.Size = new System.Drawing.Size(700, 500);
+                })
+            );
 
-            // Plot daily return histogram
-            PlotHistogram("Daily Return Histogram", dailyReturns, 20);
+            // Time-series line chart of daily returns
+            var dailyReturnLineChart = DataSeriesBox.Show(
+                ohlcDF.RowKeys.Select(x => (double)x),
+                ohlcDF.FillMissing(0.0)["DailyReturn"].ValuesAll
+            );
 
-            // Calculate and display daily return statistics
-            double returnMean = dailyReturns.Mean();
-            double returnStdDev = dailyReturns.StandardDeviation();
-            double returnMin = dailyReturns.Min();
-            double returnMax = dailyReturns.Max();
-            double returnMedian = dailyReturns.Median();
+            System.Threading.Thread.Sleep(3000);
+            dailyReturnLineChart.Invoke(
+                new Action(() =>
+                {
+                    dailyReturnLineChart.Size = new System.Drawing.Size(700, 500);
+                })
+            );
 
-            var quantiles = Statistics.Quantile(dailyReturns, new[] { 0.25, 0.5, 0.75 });
+            var dailyReturnHistogram = HistogramBox
+            .Show(
+                ohlcDF.FillMissing(0.0)["DailyReturn"].ValuesAll.ToArray()
+            )
+            .SetNumberOfBins(20);
 
-            Console.WriteLine("-- DailyReturn Distribution --");
-            Console.WriteLine($"Mean: \t\t\t{returnMean:0.00}");
-            Console.WriteLine($"StdDev: \t\t{returnStdDev:0.00}");
-            Console.WriteLine($"Min: \t\t\t{returnMin:0.00}");
-            Console.WriteLine($"Q1 (25%): \t\t{quantiles[0]:0.00}");
-            Console.WriteLine($"Median (Q2): \t\t{quantiles[1]:0.00}");
-            Console.WriteLine($"Q3 (75%): \t\t{quantiles[2]:0.00}");
-            Console.WriteLine($"Max: \t\t\t{returnMax:0.00}");
+            System.Threading.Thread.Sleep(3000);
+            dailyReturnHistogram.Invoke(
+                new Action(() =>
+                {
+                    dailyReturnHistogram.Size = new System.Drawing.Size(700, 500);
+                })
+            );
+
+            // Check the distribution of daily returns
+            double returnMax = ohlcDF["DailyReturn"].Max();
+            double returnMean = ohlcDF["DailyReturn"].Mean();
+            double returnMedian = ohlcDF["DailyReturn"].Median();
+            double returnMin = ohlcDF["DailyReturn"].Min();
+            double returnStdDev = ohlcDF["DailyReturn"].StdDev();
+
+            double[] quantiles = Accord.Statistics.Measures.Quantiles(
+                ohlcDF.FillMissing(0.0)["DailyReturn"].ValuesAll.ToArray(),
+                new double[] { 0.25, 0.5, 0.75 }
+            );
+
+            Console.WriteLine("-- DailyReturn Distribution-- ");
+
+            Console.WriteLine("Mean: \t\t\t{0:0.00}\nStdDev: \t\t{1:0.00}\n", returnMean, returnStdDev);
+
+            Console.WriteLine(
+                "Min: \t\t\t{0:0.00}\nQ1 (25% Percentile): \t{1:0.00}\nQ2 (Median): \t\t{2:0.00}\nQ3 (75% Percentile): \t{3:0.00}\nMax: \t\t\t{4:0.00}",
+                returnMin, quantiles[0], quantiles[1], quantiles[2], returnMax
+            );
 
             Console.WriteLine("\nDONE!!!");
             Console.ReadKey();
-        }
-
-        static void PlotLineChart(string title, double[] x, double[] y)
-        {
-            var plt = new ScottPlot.Plot(700, 500);
-            plt.AddScatter(x, y);
-            plt.Title(title);
-            plt.XLabel("Time");
-            plt.YLabel("Value");
-            plt.SaveFig($"{title.Replace(" ", "_")}.png");
-            Console.WriteLine($"Saved plot: {title}.png");
-        }
-
-        static void PlotHistogram(string title, double[] data, int binCount)
-        {
-            var plt = new ScottPlot.Plot(700, 500);
-            var hist = new ScottPlot.Statistics.Histogram(data, binCount);
-            plt.AddBar(hist.Counts, hist.BinEdges.Skip(1).ToArray());
-            plt.Title(title);
-            plt.XLabel("Bins");
-            plt.YLabel("Frequency");
-            plt.SaveFig($"{title.Replace(" ", "_")}.png");
-            Console.WriteLine($"Saved histogram: {title}.png");
         }
     }
 }

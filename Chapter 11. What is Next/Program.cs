@@ -4,9 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PackageHandler
+namespace Chapter_11.What_is_Next
 {
-    internal class Class1
+    internal class Program
     {
+        public static void Main(string[] args)
+        {
+        }
     }
 }

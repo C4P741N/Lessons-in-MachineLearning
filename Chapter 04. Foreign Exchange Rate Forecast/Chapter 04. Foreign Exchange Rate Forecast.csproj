@@ -44,5 +44,12 @@
     <Compile Include="FeatureEngineer.cs" />
     <Compile Include="Modeling.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <RuntimeIdentifiers>win;linux;osx</RuntimeIdentifiers>
+  </PropertyGroup>
 </Project>
